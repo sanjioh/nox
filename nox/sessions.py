@@ -117,6 +117,11 @@ class Session:
         return self._runner.venv.bin
 
     @property
+    def site_packages(self):
+        """The site-packages directory for the virtualenv."""
+        return self._runner.venv.site_packages
+
+    @property
     def interactive(self):
         """Returns True if Nox is being run in an interactive session or False otherwise."""
         return not self._runner.global_config.non_interactive and sys.stdin.isatty()

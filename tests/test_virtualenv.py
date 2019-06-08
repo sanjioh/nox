@@ -117,6 +117,17 @@ def test_bin_windows(make_one):
     assert dir_.join("Scripts").strpath == venv.bin
 
 
+def test_site_packages(make_one):
+    venv, dir_ = make_one(interpreter="python3.6")
+    venv.create()
+    if IS_WINDOWS:
+        assert dir_.join("Lib", "site-packages").strpath == venv.site_packages
+    else:
+        assert (
+            dir_.join("lib", "python3.6", "site-packages").strpath == venv.site_packages
+        )
+
+
 def test_create(make_one):
     venv, dir_ = make_one()
     venv.create()

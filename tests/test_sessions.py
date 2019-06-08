@@ -82,6 +82,7 @@ class TestSession:
         assert session.posargs is runner.global_config.posargs
         assert session.virtualenv is runner.venv
         assert session.bin is runner.venv.bin
+        assert session.site_packages is runner.venv.site_packages
         assert session.python is runner.func.python
 
     def test_interactive(self):

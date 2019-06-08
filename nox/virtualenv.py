@@ -22,6 +22,7 @@ import py
 
 import nox.command
 from nox.logger import logger
+from nox.popen import popen
 
 # Problematic environment variables that are stripped from all commands inside
 # of a virtualenv. See https://github.com/theacodes/nox/issues/44
@@ -190,6 +191,18 @@ class VirtualEnv(ProcessEnv):
             return os.path.join(self.location, "Scripts")
         else:
             return os.path.join(self.location, "bin")
+
+    @property
+    def site_packages(self):
+        """Returns the location of the virtualenv's site-packages folder."""
+        executable_name = "python.exe" if _SYSTEM == "Windows" else "python"
+        executable_path = os.path.join(self.bin, executable_name)
+        script = (
+            "from distutils.sysconfig import get_python_lib\n"
+            "print(get_python_lib(prefix='{}'), end='')"
+        ).format(self.location)
+        _, output = popen([executable_path, "-c", script], silent=True)
+        return output
 
     def create(self):
         """Create the virtualenv."""
